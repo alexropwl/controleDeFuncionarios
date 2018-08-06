@@ -17,6 +17,7 @@ DepartamentoEntity buscaPorId(Long id);
 
 List<DepartamentoEntity>buscaTodos();
 
+boolean departamentoTemCargos(Long id);
 
 	
 	
