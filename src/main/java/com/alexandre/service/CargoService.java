@@ -17,7 +17,7 @@ CargoEntity buscarPorId(Long id);
 
 List<CargoEntity>buscarTodos();
 
-
+boolean cargoTemFuncionarios(Long id);
 
 
 }
