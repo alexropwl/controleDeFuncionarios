@@ -11,6 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
+
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "FUNCIONARIOS")
@@ -20,12 +27,15 @@ public class FuncionarioEntity extends AbstractEntity<Long> {
 @Column(nullable = false, unique = true)	
 private String nome;
 
+@NumberFormat(style= Style.CURRENCY , pattern ="#,##0.00")
 @Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 0.00")
 private BigDecimal salario;
 
+@DateTimeFormat(iso = ISO.DATE)
 @Column(nullable = false, name="data_entrada", columnDefinition="DATE")
 private LocalDate dataEntrada;
 
+@DateTimeFormat(iso = ISO.DATE)
 @Column(name="data_saida",nullable = true, columnDefinition = "DATE")
 private LocalDate  dataSaida;
 
