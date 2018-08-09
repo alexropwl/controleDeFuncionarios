@@ -35,7 +35,7 @@ public class FuncionarioController {
 	@GetMapping("/cadastrar")
 	public String cadastrar(FuncionarioEntity funcionario) {
 
-		return "/funcionario/cadastro";
+		return "funcionario/cadastro";
 
 	}
 
@@ -43,7 +43,7 @@ public class FuncionarioController {
 	public String listar(ModelMap model) {
 
 		model.addAttribute("funcionarios", funcionarioService.buscaTodos());
-		return "/funcionario/lista";
+		return "funcionario/lista";
 	}
 
 	@PostMapping("/salvar")
@@ -105,7 +105,7 @@ public class FuncionarioController {
 		
 		model.addAttribute("funcionarios", funcionarioService.buscaPorNome(nome));
 		
-		return "/funcionario/lista";
+		return "funcionario/lista";
 		
 	}
 	
@@ -117,7 +117,7 @@ public class FuncionarioController {
 		
 		model.addAttribute("funcionarios", funcionarioService.buscarPorCargo(id));
 		
-		return "/funcionario/lista";
+		return "funcionario/lista";
 		
 	}
 	
@@ -127,7 +127,7 @@ public class FuncionarioController {
 		
 		model.addAttribute("funcionarios", funcionarioService.buscarPorData(entrada, saida));
 		
-		return "/funcionario/lista";
+		return "funcionario/lista";
 		
 	}
 	

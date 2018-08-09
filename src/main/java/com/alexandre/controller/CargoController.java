@@ -2,9 +2,12 @@ package com.alexandre.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +33,7 @@ public class CargoController {
 	@GetMapping("/cadastrar")
 	public String cadastrar(CargoEntity cargo) {
 
-		return "/cargo/cadastro";
+		return "cargo/cadastro";
 
 	}
 
@@ -38,11 +41,19 @@ public class CargoController {
 	public String listar(ModelMap model) {
 
 		model.addAttribute("cargos", cargoService.buscarTodos());
-		return "/cargo/lista";
+		return "cargo/lista";
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(CargoEntity cargo, RedirectAttributes attr) {
+	public String salvar( @Valid CargoEntity cargo, BindingResult result, RedirectAttributes attr) {
+		
+		if(result.hasErrors()) {
+			
+			return "cargo/cadastro";
+			
+		}
+		
+		
 		cargoService.salvar(cargo);
 
 		attr.addFlashAttribute("success", " Cargo salvo com sucesso");
@@ -67,8 +78,14 @@ public class CargoController {
 	}
 
 	@PostMapping("/editar")
-	public String editar(CargoEntity cargo, RedirectAttributes attr) {
+	public String editar(@Valid CargoEntity cargo, BindingResult result , RedirectAttributes attr ) {
 
+           if(result.hasErrors()) {
+			
+			return "cargo/cadastro";
+			
+		}
+		
 		cargoService.editar(cargo);
 		attr.addFlashAttribute("success", "cargo editado com sucesso");
 

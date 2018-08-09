@@ -1,8 +1,13 @@
 package com.alexandre.controller;
 
+
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,19 +27,25 @@ public class DepartamentoController {
 	@GetMapping("/cadastrar")
 	public String cadastrar(DepartamentoEntity departamento) {
 
-		return "/departamento/cadastro";
+		return "departamento/cadastro";
 	}
 
 	@GetMapping("listar")
 	public String listar(ModelMap model) {
 
 		model.addAttribute("departamentos", service.buscaTodos());
-		return "/departamento/lista";
+		return "departamento/lista";
 
 	}
 
 	@PostMapping("/salvar")
-	public String salvar(DepartamentoEntity departamento, RedirectAttributes attr) {
+	public String salvar(@Valid DepartamentoEntity departamento, BindingResult result, RedirectAttributes attr) {
+
+		if (result.hasErrors()) {
+
+			return "departamento/cadastro";
+
+		}
 
 		service.salvar(departamento);
 		attr.addFlashAttribute("success", "Departamento editado com sucesso.");
@@ -48,12 +59,18 @@ public class DepartamentoController {
 
 		model.addAttribute("departamentoEntity", service.buscaPorId(id));
 
-		return "/departamento/cadastro";
+		return "departamento/cadastro";
 
 	}
 
 	@PostMapping("/editar")
-	public String editar(DepartamentoEntity departamento, RedirectAttributes attr) {
+	public String editar(@Valid DepartamentoEntity departamento,BindingResult result, RedirectAttributes attr) {
+
+		if (result.hasErrors()) {
+
+			return "departamento/cadastro";
+
+		}
 
 		service.editar(departamento);
 		attr.addFlashAttribute("success", "Departamento editado com sucesso.");
@@ -66,13 +83,12 @@ public class DepartamentoController {
 	public String excluir(@PathVariable("id") Long id, ModelMap model) {
 
 		if (service.departamentoTemCargos(id)) {
-             
-			model.addAttribute("fail","Departamento não removido possui cargos vinculados.");
-			
 
-		}else {
+			model.addAttribute("fail", "Departamento não removido possui cargos vinculados.");
+
+		} else {
 			service.excluir(id);
-			model.addAttribute("success","Departamento removido com sucesso.");
+			model.addAttribute("success", "Departamento removido com sucesso.");
 		}
 
 		return listar(model);
